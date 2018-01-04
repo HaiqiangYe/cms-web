@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<!-- fjcw -->
+
+<mapper namespace="com.fjcw.cms.dao.ArticleLinkDao">
+
+	<!-- ############################## -->
+	<!-- ###### 增加 ###### -->
+	<!-- ############################## -->
+	<insert id="addArticleLink" parameterType="com.fjcw.cms.entity.ArticleLink">
+		insert into
+		articleLink(path,articleId,title,type,createTime,author)
+		values(#{path},#{articleId},#{title},#{type},#{createTime},#{author})
+		<selectKey resultType="long" keyProperty="id">
+			SELECT
+			LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+
+	<!-- ############################## -->
+	<!-- ###### 删除 ###### -->
+	<!-- ############################## -->
+
+	<delete id="deleteArticleLinkById" parameterType="com.fjcw.cms.entity.ArticleLink">
+		delete from articleLink
+		where id=#{id}
+	</delete>
+
+	<!-- ############################## -->
+	<!-- ###### 修改 ###### -->
+	<!-- ############################## -->
+
+	<update id="updateArticleLink" parameterType="com.fjcw.cms.entity.ArticleLink">
+		UPDATE articleLink SET
+		path=#{path},
+		title=#{title},
+		author=#{author},
+		createTime=#{createTime},
+		articleId=#{articleId},
+		type=#{type}
+		WHERE
+		id=#{id}
+	</update>
+	
+
+	<!-- ############################## -->
+	<!-- ###### 查询 ###### -->
+	<!-- ############################## -->
+
+	<select id="getArticleLinkById" parameterType="long"
+		resultType="com.fjcw.cms.entity.vo.ArticleLinkVo">
+		select * from articleLink where id=#{id}
+	</select>
+
+	<select id="getArticleListByArticleId" resultType="com.fjcw.cms.entity.vo.ArticleLinkVo">
+		select * from
+		articleLink
+		where articleId =#{articleId} order by createTime
+		desc 
+	</select>
+	<select id="getArticleListByTypeNull" resultType="com.fjcw.cms.entity.vo.ArticleLinkVo">
+		select * from
+		articleLink order by createTime 
+		desc   limit
+		#{offset},#{rows}
+	</select>
+
+	<select id="getArticleListByType" resultType="com.fjcw.cms.entity.vo.ArticleLinkVo">
+		select * from
+		articleLink
+		where type =#{type} order by createTime
+		desc
+	</select>
+</mapper>  
